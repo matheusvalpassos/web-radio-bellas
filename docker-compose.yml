@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: radiobellas_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/media:/app/media
+      - ./backend/db.sqlite3:/app/db.sqlite3
+    env_file:
+      - ./backend/.env
+    environment:
+      - DEBUG=False
+
+  nginx:
+    image: nginx:alpine
+    container_name: radiobellas_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/radiobellas.conf:/etc/nginx/conf.d/default.conf
+      - ./frontend/dist:/usr/share/nginx/html # Seu app React compilado (npm run build)
+    depends_on:
+      - backend

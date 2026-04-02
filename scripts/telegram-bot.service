@@ -1,0 +1,19 @@
+[Unit]
+Description=Radiobellas Telegram Bot
+After=network.target
+
+[Service]
+User=root
+# Troque as rotas `/opt/radiobellas` abaixo pelas rotas reais de onde for dar git clone no servidor online
+WorkingDirectory=/opt/radiobellas/telegram_bot
+Environment="PYTHONUNBUFFERED=1"
+Environment="BOT_TOKEN=COLOQUE-SEU-TOKEN-AQUI"
+# Usando ambiente virtual de forma hardcoded (opcional)
+ExecStart=/usr/bin/python3 main.py
+
+# Reiniciar em caso de falha silenciosa após 5 segundos
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
